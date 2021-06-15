@@ -1,0 +1,4 @@
+<p><?php echo $__env->make('shop::home.featured-products', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?> <?php echo $__env->make('shop::home.new-products', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>&nbsp;</p>
+<div id="gtx-trans" style="position: absolute; left: 306px; top: -14.8px;">
+<div class="gtx-trans-icon"></div>
+</div>

@@ -1,0 +1,12 @@
+<div class="col-lg-6 col-md-12 col-sm-12 no-padding">
+<ul type="none">
+<li><a href="<?php echo url('page/about-us'); ?>">Sobre n&oacute;s</a></li>
+<li><a href="<?php echo url('page/contact-us'); ?>">Fale conosco </a></li>
+</ul>
+<ul type="none">
+<li></li>
+</ul>
+</div>
+<div id="gtx-trans" style="position: absolute; left: 10px; top: 2px;">
+<div class="gtx-trans-icon"></div>
+</div>
