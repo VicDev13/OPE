@@ -2,6 +2,7 @@
 
 namespace ElasticAdapter\Documents;
 
+use ElasticAdapter\Support\Arr;
 use ElasticAdapter\Support\ArrayableInterface;
 
 final class Document implements ArrayableInterface
@@ -29,6 +30,14 @@ final class Document implements ArrayableInterface
     public function getContent(): array
     {
         return $this->content;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getField(string $key)
+    {
+        return Arr::get($this->content, $key);
     }
 
     public function toArray(): array

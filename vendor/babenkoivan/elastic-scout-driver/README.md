@@ -12,6 +12,10 @@
     <a href="https://paypal.me/babenkoi"><img src="https://img.shields.io/badge/donate-paypal-blue"></a>
 </p>
 
+<p align="center">
+    <a href="https://www.buymeacoffee.com/ivanbabenko" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-green.png" alt="Buy Me A Coffee" height="50"></a>
+</p>
+
 ---
 
 Elasticsearch driver for Laravel Scout.
@@ -30,10 +34,10 @@ Elasticsearch driver for Laravel Scout.
 
 The current version of Elastic Scout Driver has been tested with the following configuration:
 
-* PHP 7.2-7.4
-* Elasticsearch 7.0-7.9
+* PHP 7.2-8.0
+* Elasticsearch 7.0-7.10
 * Laravel 6.x-8.x
-* Laravel Scout 7.x-8.x
+* Laravel Scout 7.x-9.x
 
 ## Installation
 
@@ -48,10 +52,18 @@ composer require babenkoivan/elastic-scout-driver
 composer require laravel/scout
 ``` 
 
-When Scout is installed publish its configuration and change the `driver` option in the `config/scout.php` file to `elastic`:
+After Scout has been installed, publish its configuration file using:
 
 ```bash
 php artisan vendor:publish --provider="Laravel\Scout\ScoutServiceProvider"
+```
+
+Then, change the `driver` option in the `config/scout.php` file to `elastic`:
+
+```php
+// config/scout.php
+
+'driver' => env('SCOUT_DRIVER', 'elastic'),
 ```
 
 If you want to use Elastic Scout Driver with [Lumen framework](https://lumen.laravel.com/) check [this guide](https://github.com/babenkoivan/elastic-scout-driver/wiki/Lumen-Installation).
@@ -100,7 +112,7 @@ is used:
 $orders = App\Order::search()->where('user_id', 1)->get();
 ``` 
 
-Please refer to [the official Laravel Scout documentation](https://laravel.com/docs/6.x/scout)
+Please refer to [the official Laravel Scout documentation](https://laravel.com/docs/master/scout)
 for more details and usage examples.
 
 ## Advanced Search

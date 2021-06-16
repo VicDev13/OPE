@@ -2,6 +2,7 @@
 
 namespace Facebook\WebDriver\Remote;
 
+use Facebook\WebDriver\Exception\ElementNotInteractableException;
 use Facebook\WebDriver\Exception\WebDriverException;
 use Facebook\WebDriver\Interactions\Internal\WebDriverCoordinates;
 use Facebook\WebDriver\Internal\WebDriverLocatable;
@@ -69,10 +70,17 @@ class RemoteWebElement implements WebDriverElement, WebDriverLocatable
      */
     public function click()
     {
-        $this->executor->execute(
-            DriverCommand::CLICK_ELEMENT,
-            [':id' => $this->id]
-        );
+        try {
+            $this->executor->execute(
+                DriverCommand::CLICK_ELEMENT,
+                [':id' => $this->id]
+            );
+        } catch (ElementNotInteractableException $e) {
+            // An issue with geckodriver (https://github.com/mozilla/geckodriver/issues/653) prevents clicking on a link
+            // if the first child is a block-level element.
+            // The workaround in this case is to click on a child element.
+            $this->clickChildElement($e);
+        }
 
         return $this;
     }
@@ -196,10 +204,25 @@ class RemoteWebElement implements WebDriverElement, WebDriverLocatable
      */
     public function getLocationOnScreenOnceScrolledIntoView()
     {
-        $location = $this->executor->execute(
-            DriverCommand::GET_ELEMENT_LOCATION_ONCE_SCROLLED_INTO_VIEW,
-            [':id' => $this->id]
-        );
+        if ($this->isW3cCompliant) {
+            $script = <<<JS
+var e = arguments[0];
+e.scrollIntoView({ behavior: 'instant', block: 'end', inline: 'nearest' }); 
+var rect = e.getBoundingClientRect(); 
+return {'x': rect.left, 'y': rect.top};
+JS;
+
+            $result = $this->executor->execute(DriverCommand::EXECUTE_SCRIPT, [
+                'script' => $script,
+                'args' => [[JsonWireCompat::WEB_DRIVER_ELEMENT_IDENTIFIER => $this->id]],
+            ]);
+            $location = ['x' => $result['x'], 'y' => $result['y']];
+        } else {
+            $location = $this->executor->execute(
+                DriverCommand::GET_ELEMENT_LOCATION_ONCE_SCROLLED_INTO_VIEW,
+                [':id' => $this->id]
+            );
+        }
 
         return new WebDriverPoint($location['x'], $location['y']);
     }
@@ -402,12 +425,23 @@ class RemoteWebElement implements WebDriverElement, WebDriverLocatable
     public function submit()
     {
         if ($this->isW3cCompliant) {
+            // Submit method cannot be called directly in case an input of this form is named "submit".
+            // We use this polyfill to trigger 'submit' event using form.dispatchEvent().
+            $submitPolyfill = $script = <<<HTXT
+                var form = arguments[0];
+                while (form.nodeName !== "FORM" && form.parentNode) { // find the parent form of this element
+                    form = form.parentNode;
+                }
+                if (!form) {
+                    throw Error('Unable to find containing form element');
+                }
+                var event = new Event('submit', {bubbles: true, cancelable: true});
+                if (form.dispatchEvent(event)) {
+                    HTMLFormElement.prototype.submit.call(form);
+                }
+HTXT;
             $this->executor->execute(DriverCommand::EXECUTE_SCRIPT, [
-                // cannot call the submit method directly in case an input of this form is named "submit"
-                'script' => sprintf(
-                    'return Object.getPrototypeOf(%1$s).submit.call(%1$s);',
-                    $this->getTagName() === 'form' ? 'arguments[0]' : 'arguments[0].form'
-                ),
+                'script' => $submitPolyfill,
                 'args' => [[JsonWireCompat::WEB_DRIVER_ELEMENT_IDENTIFIER => $this->id]],
             ]);
 
@@ -475,6 +509,40 @@ class RemoteWebElement implements WebDriverElement, WebDriverLocatable
             ':id' => $this->id,
             ':other' => $other->getID(),
         ]);
+    }
+
+    /**
+     * Attempt to click on a child level element.
+     *
+     * This provides a workaround for geckodriver bug 653 whereby a link whose first element is a block-level element
+     * throws an ElementNotInteractableException could not scroll into view exception.
+     *
+     * The workaround provided here attempts to click on a child node of the element.
+     * In case the first child is hidden, other elements are processed until we run out of elements.
+     *
+     * @param ElementNotInteractableException $originalException The exception to throw if unable to click on any child
+     * @see https://github.com/mozilla/geckodriver/issues/653
+     * @see https://bugzilla.mozilla.org/show_bug.cgi?id=1374283
+     */
+    protected function clickChildElement(ElementNotInteractableException $originalException)
+    {
+        $children = $this->findElements(WebDriverBy::xpath('./*'));
+        foreach ($children as $child) {
+            try {
+                // Note: This does not use $child->click() as this would cause recursion into all children.
+                // Where the element is hidden, all children will also be hidden.
+                $this->executor->execute(
+                    DriverCommand::CLICK_ELEMENT,
+                    [':id' => $child->id]
+                );
+
+                return;
+            } catch (ElementNotInteractableException $e) {
+                // Ignore the ElementNotInteractableException exception on this node. Try the next child instead.
+            }
+        }
+
+        throw $originalException;
     }
 
     /**

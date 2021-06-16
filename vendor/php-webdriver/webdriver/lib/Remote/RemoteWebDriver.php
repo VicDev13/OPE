@@ -2,7 +2,6 @@
 
 namespace Facebook\WebDriver\Remote;
 
-use Facebook\WebDriver\Exception\UnsupportedOperationException;
 use Facebook\WebDriver\Interactions\WebDriverActions;
 use Facebook\WebDriver\JavaScriptExecutor;
 use Facebook\WebDriver\WebDriver;
@@ -134,21 +133,8 @@ class RemoteWebDriver implements WebDriver, JavaScriptExecutor, WebDriverHasInpu
         );
 
         $response = $executor->execute($command);
-        $value = $response->getValue();
 
-        if (!$isW3cCompliant = isset($value['capabilities'])) {
-            $executor->disableW3cCompliance();
-        }
-
-        if ($isW3cCompliant) {
-            $returnedCapabilities = DesiredCapabilities::createFromW3cCapabilities($value['capabilities']);
-        } else {
-            $returnedCapabilities = new DesiredCapabilities($value);
-        }
-
-        $driver = new static($executor, $response->getSessionID(), $returnedCapabilities, $isW3cCompliant);
-
-        return $driver;
+        return static::createFromResponse($response, $executor);
     }
 
     /**
@@ -203,20 +189,13 @@ class RemoteWebDriver implements WebDriver, JavaScriptExecutor, WebDriverHasInpu
     /**
      * Create a new top-level browsing context.
      *
-     * @return RemoteWebDriver The current instance.
+     * @codeCoverageIgnore
+     * @deprecated Use $driver->switchTo()->newWindow()
+     * @return WebDriver The current instance.
      */
     public function newWindow()
     {
-        if (!$this->isW3cCompliant) {
-            throw new UnsupportedOperationException('New window is only supported in W3C mode');
-        }
-
-        $response = $this->execute(DriverCommand::NEW_WINDOW, []);
-        $handle = $response['handle'];
-
-        $this->switchTo()->window($handle);
-
-        return $this;
+        return $this->switchTo()->newWindow();
     }
 
     /**
@@ -618,6 +597,10 @@ class RemoteWebDriver implements WebDriver, JavaScriptExecutor, WebDriverHasInpu
     }
 
     /**
+     * Execute custom commands on remote end.
+     * For example vendor-specific commands or other commands not implemented by php-webdriver.
+     *
+     * @see https://github.com/php-webdriver/php-webdriver/wiki/Custom-commands
      * @param string $endpointUrl
      * @param string $method
      * @param array $params
@@ -648,6 +631,30 @@ class RemoteWebDriver implements WebDriver, JavaScriptExecutor, WebDriverHasInpu
     public function isW3cCompliant()
     {
         return $this->isW3cCompliant;
+    }
+
+    /**
+     * Create instance based on response to NEW_SESSION command.
+     * Also detect W3C/OSS dialect and setup the driver/executor accordingly.
+     *
+     * @internal
+     * @return static
+     */
+    protected static function createFromResponse(WebDriverResponse $response, HttpCommandExecutor $commandExecutor)
+    {
+        $responseValue = $response->getValue();
+
+        if (!$isW3cCompliant = isset($responseValue['capabilities'])) {
+            $commandExecutor->disableW3cCompliance();
+        }
+
+        if ($isW3cCompliant) {
+            $returnedCapabilities = DesiredCapabilities::createFromW3cCapabilities($responseValue['capabilities']);
+        } else {
+            $returnedCapabilities = new DesiredCapabilities($responseValue);
+        }
+
+        return new static($commandExecutor, $response->getSessionID(), $returnedCapabilities, $isW3cCompliant);
     }
 
     /**

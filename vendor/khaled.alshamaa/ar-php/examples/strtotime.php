@@ -9,6 +9,15 @@
 
 <body>
 
+<div class="Paragraph">
+<h2>Arabic StrToTime:</h2>
+<p align="justified">Parse about any Arabic textual datetime description into a Unix timestamp.</p>
+
+<p align="justified">The function expects to be given a string containing an Arabic date format 
+and will try to parse that format into a Unix timestamp (the number of seconds since January 
+1 1970 00:00:00 GMT), relative to the timestamp given in now, or the current time if none is supplied.</p>
+</div><br />
+
 <div class="Paragraph" dir="rtl">
 <h2 dir="ltr">Example Output:</h2>
 <?php
@@ -117,5 +126,6 @@ END;
 highlight_string($code);
 ?>
 </div>
+<footer><i><a href="https://github.com/khaled-alshamaa/ar-php">Ar-PHP</a>, an open-source library for website developers to process Arabic content</i></footer>
 </body>
 </html>

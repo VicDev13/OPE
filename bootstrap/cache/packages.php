@@ -62,6 +62,13 @@
       'PDF' => 'Barryvdh\\DomPDF\\Facade',
     ),
   ),
+  'cagartner/bagisto-pagseguro' => 
+  array (
+    'providers' => 
+    array (
+      0 => 'Cagartner\\Pagseguro\\Providers\\PagseguroServiceProvider',
+    ),
+  ),
   'fideloper/proxy' => 
   array (
     'providers' => 

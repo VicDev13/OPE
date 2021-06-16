@@ -28,7 +28,7 @@ operations.
 
 The current version of Elastic Adapter has been tested with the following configuration:
 
-* PHP 7.2-7.4
+* PHP 7.2-8.0
 * Elasticsearch 7.x
 
 ## Installation
@@ -163,6 +163,36 @@ Close an index:
 $indexManager->close('my_index');
 ```
 
+### Put Alias
+
+Create an alias:
+
+```php
+$alias = new \ElasticAdapter\Indices\Alias('my_alias', [
+    'term' => [
+        'user_id' => 12,
+    ],
+]);
+
+$indexManager->putAlias('my_index', $alias);
+```
+
+### Get Aliases
+
+Get index aliases:
+
+```php
+$indexManager->getAliases('my_index');
+```
+
+### Delete Alias
+
+Delete an alias:
+
+```php
+$indexManager->deleteAlias('my_index', 'my_alias');
+```
+
 ## Document Management
 
 Similarly to `IndexManager`, the `DocumentManager` class also depends on Elasticsearch client:
@@ -196,6 +226,15 @@ There is also an option to refresh index immediately:
 $documentManager->index('my_index', $documents, true);
 ```
 
+In addition, you can set a custom routing path:
+
+```php
+$documentManager->index('my_index', $documents, false, 'my_field');
+```
+
+This will route documents to an Elasticsearch shard based on the document's `my_field` value. 
+Routing path can be specified using "dot" notation to access nested fields.
+
 ### Delete
 
 Remove a document from the index:
@@ -215,7 +254,13 @@ If you want the index to be refreshed immediately pass `true` as the third argum
 $documentManager->delete('my_index', $documents, true);
 ```
 
-You can also delete documents using query:
+You can also set a custom routing path to delete the document from a specific shard:
+
+```php
+$documentManager->delete('my_index', $documents, false, 'my_field');
+```
+
+Finally, you can delete documents using query:
 
 ```php
 $documentManager->deleteByQuery('my_index', ['match_all' => new \stdClass()]);
@@ -276,6 +321,23 @@ $request->setAggregations([
 $request->setSort([
     ['post_date' => ['order' => 'asc']],
     '_score'
+]);
+
+// rescore documents
+$request->setRescore([
+    'window_size' => 50,
+    'query' => [
+        'rescore_query' => [
+            'match_phrase' => [
+                'message' => [
+                    'query' => 'the quick brown',
+                    'slop' => 2,
+                ],
+            ],
+        ],
+        'query_weight' => 0.7,
+        'rescore_query_weight' => 1.2,
+    ]
 ]);
 
 // add a post filter

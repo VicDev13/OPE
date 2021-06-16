@@ -1,9 +1,9 @@
 <?php
 
 return [
-    'invalid_vat_format' => 'The given vat id has a wrong format',
-    'security-warning' => 'Suspicious activity found!!!',
-    'nothing-to-delete' => 'Nothing to delete',
+    'invalid_vat_format' => 'O id do IVA fornecido tem um formato incorreto.',
+    'security-warning' => 'Atividade suspeita encontrada!!!',
+    'nothing-to-delete' => 'Nada para deletar',
 
     'layouts' => [
         'my-account' => 'Minha Conta',
@@ -18,7 +18,7 @@ return [
     'common' => [
         'error' => 'Algo deu errado, por favor, tente novamente mais tarde.',
         'image-upload-limit' => 'O tamanho máximo de upload da imagem é 2 MB',
-        'no-result-found' => 'We could not find any records.'
+        'no-result-found' => 'Não foi possível encontrar nenhum registro.'
     ],
 
     'home' => [
@@ -73,8 +73,8 @@ return [
         'page-title' => 'Buscar',
         'found-results' => 'Resultados da pesquisa encontrados',
         'found-result' => 'Resultado da pesquisa encontrado',
-        'analysed-keywords' => 'Analysed Keywords',
-        'image-search-option' => 'Image Search Option'
+        'analysed-keywords' => 'Palavras-chave analisadas',
+        'image-search-option' => 'Opção de pesquisa de imagens'
     ],
 
     'reviews' => [
@@ -198,7 +198,7 @@ return [
                 'gender' => 'Gênero',
                 'other' => 'De outros',
                 'male' => 'Masculino',
-                'female' => 'Fêmeo',
+                'female' => 'Feminino',
                 'dob' => 'Data de Nascimento',
                 'phone' => 'Telefone',
                 'email' => 'Email',
@@ -227,7 +227,7 @@ return [
                     'contact' => 'Contato',
                     'confirm-delete' =>  'Você realmente deseja excluir este endereço?',
                     'default-delete' => 'O endereço padrão não pode ser alterado',
-                    'enter-password' => 'Enter Your Password.',
+                    'enter-password' => 'Coloque sua senha.',
                 ],
 
                 'create' => [
@@ -241,7 +241,7 @@ return [
                     'street-address' => 'Endereço',
                     'country' => 'País',
                     'state' => 'Estado',
-                    'select-state' => 'Select a region, state or province',
+                    'select-state' => 'Selecione uma região, estado ou província',
                     'city' => 'Cidade',
                     'postcode' => 'CEP',
                     'phone' => 'Telefone',
@@ -259,7 +259,7 @@ return [
                 'delete' => [
                     'success' => 'Endereço Excluído com sucesso',
                     'failure' => 'Endereço não pode ser adicionado',
-                    'wrong-password' => 'Wrong Password !'
+                    'wrong-password' => 'Senha incorreta!'
                 ]
             ],
 
@@ -294,7 +294,7 @@ return [
                     'item-status' => 'Item Status',
                     'item-ordered' => 'Pedidos (:qty_ordered)',
                     'item-invoice' => 'Faturados (:qty_invoiced)',
-                    'item-shipped' => 'enviados (:qty_shipped)',
+                    'item-shipped' => 'Enviados (:qty_shipped)',
                     'item-canceled' => 'Cancelados (:qty_canceled)',
                     'item-refunded' => 'Refunded (:qty_refunded)',
                     'price' => 'Preço',
@@ -302,7 +302,7 @@ return [
                     'subtotal' => 'Subtotal',
                     'shipping-handling' => 'Entrega & Manuseio',
                     'tax' => 'Imposto',
-                    'discount' => 'Discount',
+                    'discount' => 'Desconto',
                     'tax-percent' => 'Percentagem de imposto',
                     'tax-amount' => 'Valor de Imposto',
                     'discount-amount' => 'Valor de Desconto',
@@ -323,10 +323,10 @@ return [
                     'bill-to' => 'Cobrança de',
                     'ship-to' => 'Enviar para',
                     'contact' => 'Contato',
-                    'refunds' => 'Refunds',
-                    'individual-refund' => 'Refund #:refund_id',
-                    'adjustment-refund' => 'Adjustment Refund',
-                    'adjustment-fee' => 'Adjustment Fee',
+                    'refunds' => 'Reembolsos',
+                    'individual-refund' => 'Reembolso #:refund_id',
+                    'adjustment-refund' => 'Reembolso de ajuste',
+                    'adjustment-fee' => 'Taxa de ajuste',
                     'tracking-number' => 'Numero de rastreio',
                     'cancel-confirm-msg'  => 'Tem certeza de que deseja cancelar este pedido ?'
                 ]
@@ -362,12 +362,12 @@ return [
                 'name' => 'Título',
                 'status' => 'Status',
                 'pending' => 'Pendente',
-                'available' => 'acessível',
+                'available' => 'Acessível',
                 'expired' => 'Expirado',
                 'remaining-downloads' => 'Downloads restantes',
                 'unlimited' => 'Ilimitado',
                 'download-error' => 'O link para download expirou.',
-                'payment-error' => 'Payment has not been done for this download.'
+                'payment-error' => 'O pagamento não foi feito para este download.'
             ],
 
             'review' => [
@@ -385,7 +385,7 @@ return [
 
     'products' => [
         'layered-nav-title' => 'Compre por',
-        'price-label' => 'Tão baixo quanto',
+        'price-label' => 'A partir de',
         'remove-filter-link-title' => 'Limpar Todos',
         'filter-to' => 'a',
         'sort-by' => 'Ordernar por',
@@ -428,10 +428,10 @@ return [
         'total-amount' => 'Valor total',
         'none' => 'Nenhum',
         'available-for-order' => 'Disponível para encomenda',
-        'settings' => 'Settings',
-        'compare_options' => 'Compare Options',
-        'wishlist-options' => 'Wishlist Options',
-        'offers' => 'Buy :qty for :price each and save :discount%',
+        'settings' => 'Definições',
+        'compare_options' => 'Opções de comparação',
+        'wishlist-options' => 'Opções de lista de desejos',
+        'offers' => 'Compre :qty por :price cada e economize :discount%',
     ],
 
     // 'reviews' => [
@@ -478,18 +478,18 @@ return [
                 'success' => 'Item foi adicionado com sucesso ao carrinho',
                 'success-remove' => 'Item foi removido com sucesso do carrinho',
                 'error-add' => 'Item não pode ser adicionado ao carrinho, por favor, tente novamente mais tarde',
-                'inactive' => 'An item is inactive and was removed from cart',
-                'inactive-add' => 'Inactive item cannot be added to cart',
+                'inactive' => 'Um item está inativo e foi removido do carrinho',
+                'inactive-add' => 'O item inativo não pode ser adicionado ao carrinho',
             ],
             'quantity-error' => 'Quantidade solicitada não está disponível',
             'cart-subtotal' => 'Subtotal do carrinho',
             'cart-remove-action' => 'Você realmente quer fazer isso ?',
-            'partial-cart-update' => 'Only some of the product(s) were updated',
+            'partial-cart-update' => 'Apenas alguns dos produtos foram atualizados',
             'link-missing' => '',
             'event' => [
-                'expired' => 'This event has been expired.'
+                'expired' => 'Este evento expirou.'
             ],
-            'minimum-order-message' => 'Minimum order amount is :amount'
+            'minimum-order-message' => 'O valor mínimo do pedido é :amount'
         ],
 
         'onepage' => [
@@ -620,8 +620,8 @@ return [
         ],
 
         'refund' => [
-            'heading' => 'Your Refund #:refund_id for Order #:order_id',
-            'subject' => 'Refund for your order #:order_id',
+            'heading' => 'Seu Reembolso #:refund_id do Pedido #:order_id',
+            'subject' => 'Reembolso pelo seu pedido #:order_id',
             'summary' => 'Resumo do reembolso',
             'adjustment-refund' => 'Reembolso de ajuste',
             'adjustment-fee' => 'Taxa de ajuste'

@@ -1,4 +1,3 @@
 <p><?php echo $__env->make('shop::home.featured-products', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?> <?php echo $__env->make('shop::home.new-products', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>&nbsp;</p>
-<div id="gtx-trans" style="position: absolute; left: 306px; top: -14.8px;">
-<div class="gtx-trans-icon"></div>
-</div>
+<h5>"Para personaliza&ccedil;&atilde;o do pedido, por gentileza entrar em contato conosco atrav&eacute;s do e-mail ou do whatsapp que est&aacute; localizado em "Fale Conosco", logo abaixo, informando o n&uacute;mero do seu pedido."</h5>
+<p></p>

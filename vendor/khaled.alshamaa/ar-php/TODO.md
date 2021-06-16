@@ -1,13 +1,13 @@
 ## To-Do List
-* Continuous Integration with GitHub Actions and PHPUnit (e.g. [php-actions/phpunit](https://github.com/php-actions/example-phpunit)).
+* Develop an Arabic version of the PHP [similar_text](https://www.php.net/manual/en/function.similar-text.php) function to handle Harakat issue properly.
+
+* [Setup PHP in GitHub Actions](https://github.com/marketplace/actions/setup-php-action) for CI/CD (e.g. [php-actions/phpunit](https://github.com/php-actions/example-phpunit)).
 
 * Insure coding standards in Documentation ([PSR-5](https://github.com/php-fig/fig-standards/blob/master/proposed/phpdoc.md)).
 
-* Error handle, convert into exceptions (set_error_handler: try/catch)!
+* Improve error handling by the switch to exceptions (set_error_handler: try/catch)!
 
-* Improve the performance of _checkAr, checkEn, arIdentify, and arSummaryRankSentences_ methods.
-
-* Enhance example scripts by call the following functions: _arSummaryLoadExtra, dms2dd, setQueryArrFields, swapAf, arabizi._
+* Enhance example scripts by call the following methods: _arSummaryLoadExtra, setQueryArrFields, swapAf, arabizi, dms2dd, dd2dms, dd2olc, olc2dd._
 
 ### _Performance Improvement Tips (lessons learned)_
 * json_decode parser is faster than SimpleXML since JSON is only a description of nested string sequences, without the need to offer a DOM interface and attributes parsing.
@@ -148,19 +148,7 @@ After a profile information file has been generated you can open it with the [KC
 
 The [phar](https://www.php.net/manual/en/intro.phar.php) extension provides a way to put entire PHP applications into a single file called a "phar" (PHP Archive) for easy distribution and installation.
 
-In  order to create and modify Phar files, the _php.ini_ setting `phar.readonly` must be set to __Off__, then we have to change the first line in the Arabic **__construct** method to set the root directory private property in a proper way:
-
-```php
-$this->rootDirectory = 'phar://ArPHP.phar';
-```
-
-Instead of the following original line of code:
-
-```php
-$this->rootDirectory = dirname(__FILE__);
-``` 
-
-After this small change, we can create the "ArPHP.phar" file using the following code:
+In  order to create and modify Phar files, the _php.ini_ setting `phar.readonly` must be set to __Off__, then we can create the "ArPHP.phar" file using the following code:
 
 ```php
 $p = new Phar('ArPHP.phar', 0, 'ArPHP.phar');
